@@ -16,7 +16,7 @@ export function EntryDetail({ entry, onClose, onDelete }: EntryDetailProps) {
   return (
     <div className="fixed inset-0 z-40 flex flex-col bg-[#1a1410]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#3d3028]">
+      <div className="flex items-center justify-between px-4 border-b border-[#3d3028]" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 16px)', paddingBottom: '12px' }}>
         <button onClick={onClose} className="p-3 -ml-3 text-[#a89880] hover:text-[#f0e6d3] touch-manipulation">
           <X size={24} />
         </button>
