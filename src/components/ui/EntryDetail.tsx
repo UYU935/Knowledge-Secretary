@@ -17,13 +17,13 @@ export function EntryDetail({ entry, onClose, onDelete }: EntryDetailProps) {
     <div className="fixed inset-0 z-40 flex flex-col bg-[#1a1410]">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[#3d3028]">
-        <button onClick={onClose} className="p-2 -ml-2 text-[#a89880] hover:text-[#f0e6d3]">
-          <X size={20} />
+        <button onClick={onClose} className="p-3 -ml-3 text-[#a89880] hover:text-[#f0e6d3] touch-manipulation">
+          <X size={24} />
         </button>
         <span className="text-sm text-[#a89880]">{date}</span>
         <button
           onClick={() => onDelete(entry.id)}
-          className="p-2 -mr-2 text-red-400 hover:text-red-300"
+          className="p-3 -mr-3 text-red-400 hover:text-red-300 touch-manipulation"
         >
           <Trash2 size={18} />
         </button>
