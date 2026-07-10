@@ -4,7 +4,9 @@ import { Spinner } from '../components/ui/Spinner'
 import type { Genre } from '../types'
 
 interface SettingsScreenProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onAddGenre: (name: string, icon: string) => Promise<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onToggleGenre: (id: string, active: boolean) => Promise<any>
   onReorderGenres: (genres: Genre[]) => Promise<void>
   onError: (msg: string) => void

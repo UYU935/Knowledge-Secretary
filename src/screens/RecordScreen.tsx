@@ -17,9 +17,11 @@ export function RecordScreen({ genres, onSuccess, onError }: RecordScreenProps) 
   const [text, setText] = useState('')
   const [isRecording, setIsRecording] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null)
 
   function toggleVoice() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     if (!SpeechRecognitionAPI) {
       onError('このブラウザは音声入力に対応していません')
@@ -37,6 +39,7 @@ export function RecordScreen({ genres, onSuccess, onError }: RecordScreenProps) 
     recognition.continuous = true
     recognition.interimResults = true
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onresult = (e: any) => {
       const transcript = Array.from(e.results as SpeechRecognitionResultList)
         .map((r: SpeechRecognitionResult) => r[0].transcript)

@@ -1,4 +1,5 @@
 import { Anthropic } from '@anthropic-ai/sdk'
+import type { EntryInput } from '../types'
 
 function getClient(): Anthropic {
   const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY || localStorage.getItem('anthropic_api_key')
@@ -64,4 +65,41 @@ export async function summarizeResearchNotes(
   })
 
   return response.content.find(b => b.type === 'text')?.text || ''
+}
+
+const STRUCTURE_ENTRY_SYSTEM_PROMPT = `あなたは個人の経験を構造化する知識管理アシスタントです。
+ユーザーの生のテキストから情報を抽出し、以下のJSONのみで応答してください。説明文は不要です。
+
+{
+  "title": "端的なタイトル（20文字以内）",
+  "category": "成功 | 失敗 | 気づき | その他",
+  "summary": "要約（100文字以内）",
+  "lesson": "学んだこと・教訓（100文字以内）",
+  "book_note": "参考書籍や資料（なければ空文字）",
+  "tags": ["タグ1", "タグ2"]
+}`
+
+export async function structureEntry(rawText: string): Promise<EntryInput> {
+  const client = getClient()
+
+  const response = await client.messages.create({
+    model: 'claude-opus-4-6',
+    max_tokens: 1024,
+    system: STRUCTURE_ENTRY_SYSTEM_PROMPT,
+    messages: [{ role: 'user', content: rawText }],
+  })
+
+  const text = response.content.find(b => b.type === 'text')?.text || ''
+  try {
+    return JSON.parse(text) as EntryInput
+  } catch {
+    return {
+      title: rawText.slice(0, 20),
+      category: 'その他',
+      summary: rawText.slice(0, 100),
+      lesson: '',
+      book_note: '',
+      tags: [],
+    }
+  }
 }
