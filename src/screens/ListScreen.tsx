@@ -14,7 +14,7 @@ interface ListScreenProps {
   refreshKey: number
 }
 
-function entriesToCsv(entries: Entry[], _genreName: string): string {
+function entriesToCsv(entries: Entry[]): string {
   const header = '日付,タイトル,カテゴリ,要約,学び,本ネタ,タグ'
   const rows = entries.map(e => [
     new Date(e.created_at).toLocaleDateString('ja-JP'),
@@ -48,7 +48,7 @@ export function ListScreen({ genres, onError, onSuccess, refreshKey }: ListScree
   }
 
   function downloadCsv() {
-    const csv = entriesToCsv(entries, selectedGenre ? (genres.find(g => g.id === selectedGenre)?.name || '') : 'all')
+    const csv = entriesToCsv(entries)
     const now = new Date().toISOString().slice(0, 10).replace(/-/g, '')
     const genreSlug = selectedGenre ? (genres.find(g => g.id === selectedGenre)?.slug || 'all') : 'all'
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })

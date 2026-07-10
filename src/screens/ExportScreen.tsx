@@ -4,6 +4,8 @@ import { getSupabaseClient } from '../lib/supabase'
 import { Spinner } from '../components/ui/Spinner'
 import type { Genre, Entry } from '../types'
 
+type EntryWithGenre = Omit<Entry, 'genres'> & { genres: { name: string; slug: string } | null }
+
 type PeriodType = 'all' | 'this_month' | 'last_month' | 'custom'
 type FormatType = 'csv' | 'json'
 
@@ -44,7 +46,11 @@ export function ExportScreen({ genres, onError, onSuccess }: ExportScreenProps) 
   function toggleGenre(id: string) {
     setSelectedGenres(prev => {
       const next = new Set(prev)
-      next.has(id) ? next.delete(id) : next.add(id)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
       return next
     })
   }
@@ -78,9 +84,9 @@ export function ExportScreen({ genres, onError, onSuccess }: ExportScreenProps) 
 
       if (format === 'csv') {
         const header = '日付,ジャンル,タイトル,カテゴリ,要約,学び,本ネタ,タグ'
-        const rows = (data as Entry[]).map(e => [
+        const rows = (data as EntryWithGenre[]).map(e => [
           new Date(e.created_at).toLocaleDateString('ja-JP'),
-          (e as any).genres?.name || '',
+          e.genres?.name || '',
           e.title, e.category,
           e.summary || '', e.lesson || '', e.book_note || '',
           (e.tags || []).join(' '),

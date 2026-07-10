@@ -46,7 +46,7 @@ export function SearchScreen({ onError, onSuccess }: SearchScreenProps) {
     }
     setIsSummarizing(true)
     try {
-      const summary = await summarizeSearchResults(keyword, results)
+      const summary = await summarizeSearchResults(keyword, results.map(e => ({ title: e.title, body: e.summary || e.raw_text || '' })))
       setAiSummary(summary)
     } catch {
       onError('AI処理に失敗しました')
