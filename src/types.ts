@@ -1,17 +1,36 @@
+export type Category = '成功' | '失敗' | '気づき' | 'その他'
+
+export interface Genre {
+  id: string
+  name: string
+  slug: string
+  icon: string | null
+  sort_order: number
+  is_active: boolean
+  created_at: string
+}
+
 export interface Entry {
   id: string
+  genre_id: string | null
   title: string
-  body: string
-  genre: string
-  tags: string[]
-  created_date: string
-  synced_at: string
+  category: Category
+  summary: string | null
+  lesson: string | null
+  book_note: string | null
+  tags: string[] | null
+  raw_text: string | null
+  created_at: string
+  updated_at: string
+  genres?: Genre
 }
 
 export interface EntryInput {
   title: string
-  body: string
-  genre: string
+  category: Category
+  summary: string
+  lesson: string
+  book_note: string
   tags: string[]
 }
 
@@ -23,7 +42,7 @@ export interface Toast {
   type: 'success' | 'error' | 'info'
 }
 
-// --- 研究ノート（知識ラボ vault → Supabase research_notes） ---
+// --- 研究ノート（知識ラボ vault → Supabase research_notes）---
 
 export type ResearchNoteType = 'weekly-digest' | 'on-demand' | 'insight' | 'moc'
 
@@ -40,7 +59,7 @@ export interface ResearchNote {
   synced_at: string
 }
 
-/** NotebookLM システムトレード書庫のノートブック名（①〜⑪） */
+/** NotebookLM システムトレード書籍のノートブック名（①〜⑪） */
 export const NOTEBOOKS = [
   '①基礎',
   '②トレンドフォロー',
